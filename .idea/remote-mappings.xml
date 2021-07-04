@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteMappingsManager">
+    <list>
+      <list>
+        <remote-mappings server-id="python@sftp://sz@192.168.1.105:22/home/sz/.conda/envs/sz_conda/bin/python">
+          <settings>
+            <list>
+              <mapping local-root="$PROJECT_DIR$/../humor-computation" remote-root="/home/sz/project/humor-computation" />
+            </list>
+          </settings>
+        </remote-mappings>
+      </list>
+    </list>
+  </component>
+</project>
