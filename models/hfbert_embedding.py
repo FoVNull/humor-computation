@@ -18,9 +18,9 @@ from kashgari.embeddings.abc_embedding import ABCEmbedding
 from kashgari.logger import logger
 
 
-class TextImgEmbedding(ABCEmbedding):
+class HFBertEmbedding(ABCEmbedding):
     def to_dict(self) -> Dict[str, Any]:
-        info_dic = super(TextImgEmbedding, self).to_dict()
+        info_dic = super(HFBertEmbedding, self).to_dict()
         info_dic['config']['path'] = self.path
         return info_dic
 
@@ -32,7 +32,7 @@ class TextImgEmbedding(ABCEmbedding):
         self.vocab_path = path + '/vocab.txt'
         self.vocab_list: List[str] = []
         kwargs['segment'] = True
-        super(TextImgEmbedding, self).__init__(**kwargs)
+        super(HFBertEmbedding, self).__init__(**kwargs)
 
     def load_embed_vocab(self) -> Optional[Dict[str, int]]:
         token2idx: Dict[str, int] = {}

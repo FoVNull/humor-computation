@@ -66,7 +66,7 @@ def result_gen(task_num, pred, pred_prob=None):
     if task_num == 2:
         res = pred
 
-    with open('./datasets/CCL2021_'+str(task_num)+'.csv', 'w', encoding='utf-8') as _f:
+    with open('./datasets/DUFLER_'+str(task_num)+'.csv', 'w', encoding='utf-8') as _f:
         _f.write('id,label\n')
         for idx, _line in enumerate(res):
             _f.write('{},{}\n'.format(idx+1, _line))
