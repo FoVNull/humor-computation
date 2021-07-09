@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 
 from models.RCNN_Text_Img import RCNN_Text_Img
 from kashgari.embeddings import BertEmbedding
+from transformers import BertTokenizer
+from models.kashigari_local.hfbert_embedding import HFBertEmbedding
 from kashgari.tasks.classification import BiLSTM_Model
 
 
@@ -19,7 +21,7 @@ def read_train_data(path, pure=None):
     for i in range(len(df)):
         img_path.append(path + '/image/' + str(i+1) + '.jpg')
         x.append(
-            [word for word in jieba.cut_for_search(df['text'][i])]
+            [word for word in tokenizer.tokenize(df['text'][i])]
         )
         if pure:
             y.append(df['label'][i])
@@ -38,15 +40,15 @@ def read_task_data(task_num):
             img_path.append('./datasets/test_data/task_'+str(task_num)+'/image/'+str(i+1)+'_a.jpg')
             img_path.append('./datasets/test_data/task_'+str(task_num)+'/image/'+str(i+1)+'_b.jpg')
             x.append(
-                [word for word in jieba.cut_for_search(test_data['text_a'][i])]
+                [word for word in tokenizer.tokenize(test_data['text_a'][i])]
             )
             x.append(
-                [word for word in jieba.cut_for_search(test_data['text_b'][i])]
+                [word for word in tokenizer.tokenize(test_data['text_b'][i])]
             )
         if task_num == 2:
             img_path.append('./datasets/test_data/task_'+str(task_num)+'/image/'+str(i+1)+'.jpg')
             x.append(
-                [word for word in jieba.cut_for_search(test_data['text'][i])]
+                [word for word in tokenizer.tokenize(test_data['text'][i])]
             )
     return x, img_path
 
@@ -75,7 +77,8 @@ def result_gen(task_num, pred, pred_prob=None):
 def train_only_text():
     x, y, img_paths = read_train_data('./datasets/train_data', pure=True)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
-    embedding = BertEmbedding('./models/chinese_L-12_H-768_A-12')
+    # embedding = BertEmbedding('./models/chinese_L-12_H-768_A-12')
+    embedding = HFBertEmbedding('./models/hfl_chinese_bert_hf')
     models = BiLSTM_Model(embedding)
     models.fit(x_train, y_train, batch_size=32, epochs=10)
     models.evaluate(x_test, y_test)
@@ -102,7 +105,8 @@ def train():
     x, y, img_paths = read_train_data('./datasets/train_data')
     img_tensors = img_encode(img_paths)
 
-    embedding = BertEmbedding('./models/chinese_L-12_H-768_A-12')
+    # embedding = BertEmbedding('./models/chinese_L-12_H-768_A-12')
+    embedding = HFBertEmbedding('./models/hfl_chinese_roberta_large')
 
     model = RCNN_Text_Img(embedding)
 
@@ -134,7 +138,7 @@ if __name__ == '__main__':
     with open('./datasets/stop_words.txt', 'r', encoding='utf-8') as f:
         for line in f.readlines():
             stop_words.add(line.strip())
-
+    tokenizer = BertTokenizer.from_pretrained('./models/hfl_chinese_roberta_large')
     with tf.device("/gpu:2"):
         # train_only_text()
         train()

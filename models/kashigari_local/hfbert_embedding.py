@@ -65,17 +65,11 @@ class HFBertEmbedding(ABCEmbedding):
 
     def create_model(self):
         inputs = tf.keras.Input(shape=(None, ), name='data', dtype='int32')
-        targets = tf.keras.Input(shape=(None, ), name='output', dtype='int32')
-        img = tf.keras.Input(shape=(None, ), name='img', dtype='int32')
-
-        img_tensor = L.Conv1D(filters=128, kernel_size=4, padding='valid', activation='relu')(img)
-        img_tensor = L.GlobalMaxPooling1D()(img_tensor)
+        targets = tf.keras.Input(shape=(None,), name='output', dtype='int32')
 
         hf_model = TFBertModel.from_pretrained(self.path)
-        encodings = hf_model(inputs).hidden_states[3]
+        encodings = hf_model(inputs).hidden_states[1]
 
-        embed_tensor = L.Concatenate(axis=-1)[img_tensor, encodings]
-
-        model = tf.keras.Model(inputs=[inputs, targets], outputs=embed_tensor)
+        model = tf.keras.Model(inputs=[inputs, targets], outputs=encodings)
 
         return model

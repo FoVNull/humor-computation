@@ -24,7 +24,7 @@ class RCNN_Text_Img(ABCClassificationModel):
         """
         return {
             'layer_bilstm1': {
-                'units': 64,
+                'units': 128,
                 'return_sequences': True
             },
             'layer_dropout': {
@@ -65,17 +65,17 @@ class RCNN_Text_Img(ABCClassificationModel):
 
         img_tensor = img
         img_stack = [
-            L.Conv2D(128, (4, 4), activation='relu', padding='same'),
+            L.Conv2D(256, (4, 4), activation='relu', padding='valid'),
+            L.MaxPooling2D(),
             L.Dropout(rate=0.1),
-            L.Conv2D(64, (4, 4), activation='relu', padding='same'),
-            L.Dropout(rate=0.1),
-            L.GlobalMaxPooling2D()
+            L.GlobalMaxPooling2D(),
         ]
         for img_layer in img_stack:
             img_tensor = img_layer(img_tensor)
 
+        # img_tensor = tensor = L.Attention()([img_tensor, img_tensor])
+        # tensor = L.Attention()([tensor, tensor])
         tensor = L.Concatenate(axis=-1)([img_tensor, tensor])
-
 
         output_tensor = L.Dense(output_dim, activation='softmax', name="output0")(tensor)
         self.tf_model = tf.keras.Model(inputs=[embed_model.inputs, img], outputs=output_tensor)
