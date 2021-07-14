@@ -106,7 +106,7 @@ def train():
     img_tensors = img_encode(img_paths)
 
     # embedding = BertEmbedding('./models/chinese_L-12_H-768_A-12')
-    embedding = HFBertEmbedding('./models/hfl_chinese_roberta_large')
+    embedding = HFBertEmbedding('./models/hfl_chinese_bert_hf')
 
     model = RCNN_Text_Img(embedding)
 
