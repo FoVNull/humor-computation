@@ -68,7 +68,7 @@ class HFBertEmbedding(ABCEmbedding):
         targets = tf.keras.Input(shape=(None,), name='output', dtype='int32')
 
         hf_model = TFBertModel.from_pretrained(self.path)
-        encodings = hf_model(inputs).hidden_states[1]
+        encodings = hf_model(inputs).hidden_states[2]
 
         model = tf.keras.Model(inputs=[inputs, targets], outputs=encodings)
 

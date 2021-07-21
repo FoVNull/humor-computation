@@ -24,19 +24,13 @@ class RCNN_Text_Img(ABCClassificationModel):
         """
         return {
             'layer_bilstm1': {
-                'units': 128,
+                'units': 256,
                 'return_sequences': True
             },
             'layer_dropout': {
                 'rate': 0.1,
                 'name': 'layer_dropout'
             },
-            'layer_dropout_output': {
-                'rate': 0.1,
-                'name': 'layer_dropout_output'
-            },
-            'layer_time_distributed': {},
-
             'layer_output1': {
                 'activation': 'softmax'
             },
@@ -62,7 +56,6 @@ class RCNN_Text_Img(ABCClassificationModel):
         tensor = embed_model.output
         for layer in layer_stack:
             tensor = layer(tensor)
-
         img_tensor = img
         img_stack = [
             L.Conv2D(256, (4, 4), activation='relu', padding='valid'),
@@ -72,9 +65,8 @@ class RCNN_Text_Img(ABCClassificationModel):
         ]
         for img_layer in img_stack:
             img_tensor = img_layer(img_tensor)
-
-        # img_tensor = tensor = L.Attention()([img_tensor, img_tensor])
-        # tensor = L.Attention()([tensor, tensor])
+        tensor = L.Attention()([tensor, tensor])
+        img_tensor = L.Attention()([img_tensor, img_tensor])
         tensor = L.Concatenate(axis=-1)([img_tensor, tensor])
 
         output_tensor = L.Dense(output_dim, activation='softmax', name="output0")(tensor)
