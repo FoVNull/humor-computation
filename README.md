@@ -4,7 +4,7 @@
 基于[kashgari](https://github.com/BrikerMan/Kashgari) / tensorflow实现  
 F1过3成3就是胜利捏🤗  
 2021.07.21：  
-[结果](https://github.com/HumorComputing/CCL2021-Humor-Computation)出来了，总分0.9993差0.0002可以获奖，说实话超出期望，不过还是很可惜。  
+[结果](https://github.com/HumorComputing/CCL2021-Humor-Computation)出来了，总分0.993差0.002可以获奖，说实话超出期望，不过还是很可惜。  
 再接再厉吧，加油捏🤗    
 
 ### 更新日志
