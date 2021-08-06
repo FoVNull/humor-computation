@@ -1,6 +1,7 @@
 ## [CCL2021幽默计算评测](https://github.com/HumorComputing/CCL2021-Humor-Computation)
 
-### 多模态（文本+图片）
+### 多模态（文本+图片）  
+[![](https://img.shields.io/badge/task%20of-@CCL2021-green.svg)](http://cips-cl.org/static/CCL2021/cclEval/taskEvaluation/index.html)  
 基于[kashgari](https://github.com/BrikerMan/Kashgari) / tensorflow实现  
 F1过3成3就是胜利捏🤗  
 2021.07.21：  
